@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="dashboard-header" style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);">
+    <div>
+        <h1>Recruiter Dashboard</h1>
+        <p>Manage your job postings and applicants seamlessly.</p>
+    </div>
+    <div style="text-align: right;">
+        <a href="{% url 'jobs:create_job' %}" class="btn-primary" style="background: var(--surface-color); color: var(--secondary-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">+ Post New Job</a>
+    </div>
+</div>
+
+<div class="dashboard-stats">
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">
+            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+        </div>
+        <div class="dash-stat-info">
+            <h3>{{ jobs.count }}</h3>
+            <p>Active Jobs</p>
+        </div>
+    </div>
+    <div class="dash-stat-card">
+        <div class="dash-stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">
+            <svg width="32" height="32" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+        </div>
+        <div class="dash-stat-info">
+            <h3>{{ total_applicants }}</h3>
+            <p>Total Candidates</p>
+        </div>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 1.5rem; color: var(--text-color);">Your Job Postings</h2>
+
+{% for job in jobs %}
+<div class="glass-panel" style="margin-bottom: 2rem; padding: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+        <div>
+            <h3 style="margin: 0 0 0.5rem 0; font-size: 1.5rem; color: var(--primary-color);">{{ job.title }}</h3>
+            <div style="color: var(--text-muted); font-size: 0.95rem; display: flex; gap: 1rem; align-items: center;">
+                <span>🕒 Posted {{ job.created_at|date:"M d, Y" }}</span>
+                <span style="background: var(--surface-borde); padding: 0.2rem 0.6rem; border-radius: 9999px; font-weight: 600; color: var(--text-color);">
+                    {{ job.applications.count }} Applicants
+                </span>
+            </div>
+        </div>
+        <a href="{% url 'jobs:job_detail' job.pk %}" class="btn-secondary">View Job Details</a>
+    </div>
+    
+    {% if job.applications.all %}
+        <div class="candidate-grid">
+            {% for app in job.applications.all %}
+            <div class="candidate-card">
+                <div class="candidate-header">
+                    <div style="display: flex; gap: 1rem; align-items: center;">
+                        <div class="candidate-avatar">
+                            {{ app.applicant.username|make_list|first|upper }}
+                        </div>
+                        <div>
+                            <h4 style="margin: 0 0 0.2rem 0; font-size: 1.1rem;">{{ app.applicant.username }}</h4>
+                            <div style="font-size: 0.85rem; color: var(--text-muted);">Applied {{ app.applied_at|timesince }} ago</div>
+                        </div>
+                    </div>
+                    <span class="status-badge 
+                        {% if app.status == 'Pending' %}status-pending
+                        {% elif app.status == 'Shortlisted' %}status-shortlisted
+                        {% elif app.status == 'Hired' %}status-hired
+                        {% else %}status-rejected{% endif %}" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">
+                        {{ app.status }}
+                    </span>
+                </div>
+                
+                {% if app.cover_letter %}
+                    <div style="margin-top: 1rem; padding: 1rem; background: var(--surface-color); border-radius: 8px; font-size: 0.9rem; color: var(--text-color); border: 1px solid var(--surface-borde); max-height: 100px; overflow-y: auto;">
+                        <strong>Cover Letter:</strong><br>
+                        {{ app.cover_letter|truncatewords:20 }}
+                    </div>
+                {% endif %}
+                
+                <div class="candidate-actions">
+                    {% if app.resume_link %}
+                        <a href="{{ app.resume_link }}" target="_blank" class="btn-primary btn-small" style="flex: 1; text-align: center;">View Resume</a>
+                    {% endif %}
+                    <button onclick="alert('In a full app, you would change status here!')" class="btn-secondary btn-small" style="flex: 1;">Update Status</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed #E5E7EB; color: var(--text-muted);">
+            No applicants have applied to this position yet.
+        </div>
+    {% endif %}
+</div>
+{% empty %}
+<div class="glass-panel" style="text-align: center; padding: 4rem;">
+    <svg width="64" height="64" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" style="margin-bottom: 1rem; margin-left: auto; margin-right: auto;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+    <h3 style="color: var(--text-color); margin-bottom: 0.5rem; font-size: 1.5rem;">No Jobs Posted</h3>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">You haven't posted any jobs yet. Start recruiting top talent!</p>
+    <a href="{% url 'jobs:create_job' %}" class="btn-primary">Post Your First Job</a>
+</div>
+{% endfor %}
+
+{% endblock %}

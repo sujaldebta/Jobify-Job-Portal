@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container" style="max-width: 900px; margin: 2rem auto;">
+    <div style="text-align: center; margin-bottom: 4rem;">
+        <h1 style="font-size: 3rem; color: var(--text-color); margin-bottom: 1rem; font-weight: 800; letter-spacing: -1px;">About Jobify</h1>
+        <p style="font-size: 1.2rem; color: var(--text-muted); max-width: 500px; margin: 0 auto;">Connecting brilliant talent with groundbreaking opportunities. Built for speed, tailored for success.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 4rem;">
+        <div class="glass-panel" style="padding: 2.5rem; border-radius: 24px; box-shadow: var(--shadow);">
+            <div style="width: 50px; height: 50px; background: rgba(79, 70, 229, 0.1); color: var(--primary-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h3 style="font-size: 1.5rem; color: var(--text-color); margin-bottom: 1rem;">How It Works</h3>
+            <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                Jobify uses a unified two-role system. Users register as either <strong>Job Seekers</strong> or <strong>Recruiters</strong>. 
+            </p>
+            <ul style="color: var(--text-muted); line-height: 1.7; padding-left: 1.2rem;">
+                <li><strong>Recruiters</strong> can create professional listings, track applicant statuses, and hire top candidates from a central dashboard.</li>
+                <li><strong>Seekers</strong> can explore thousands of premium remote & local openings, submit optimized resumes, and track their interview progress in real-time.</li>
+            </ul>
+        </div>
+        
+        <div class="glass-panel" style="padding: 2.5rem; border-radius: 24px; box-shadow: var(--shadow); background: linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);">
+            <div style="width: 50px; height: 50px; background: rgba(16, 185, 129, 0.1); color: var(--secondary-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+            </div>
+            <h3 style="font-size: 1.5rem; color: var(--text-color); margin-bottom: 1rem;">How We Built It</h3>
+            <p style="color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+                Jobify was engineered from the ground up focusing on performance and world-class aesthetics.
+            </p>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem;">
+                <span style="background: var(--surface-borde); color: var(--text-color); padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem;">Python / Django</span>
+                <span style="background: var(--surface-borde); color: var(--text-color); padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem;">SQLite3 Database</span>
+                <span style="background: var(--surface-borde); color: var(--text-color); padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem;">Vanilla JavaScript</span>
+                <span style="background: var(--surface-borde); color: var(--text-color); padding: 0.4rem 1rem; border-radius: 99px; font-weight: 600; font-size: 0.85rem;">CSS3 Glassmorphism</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Scanner Section -->
+    <div class="glass-panel" style="padding: 4rem 2rem; border-radius: 24px; text-align: center; box-shadow: var(--shadow); position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50px; left: -50px; width: 150px; height: 150px; background: var(--primary-color); filter: blur(80px); opacity: 0.3; border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -50px; right: -50px; width: 150px; height: 150px; background: var(--secondary-color); filter: blur(80px); opacity: 0.3; border-radius: 50%;"></div>
+        
+        <h2 style="font-size: 2rem; color: var(--text-color); margin-bottom: 1rem; position: relative; z-index: 2;">Share Jobify Instantly</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; z-index: 2;">Have a smartphone? Open your camera and scan the QR code below to read our digital manifesto and instantly share the platform with your colleagues.</p>
+        
+        <div style="display: inline-block; padding: 1.5rem; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); position: relative; z-index: 2; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+            <!-- Dynamically generated QR Code linking to a description of the site -->
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=Welcome%20to%20Jobify!%20A%20premium%20job%20portal%20built%20using%20Django%20and%20Python.%20It%20connects%20world-class%20agencies%20with%20brilliant%20candidates%20through%20a%20beautiful%20Glassmorphism%20UI." alt="Scan to learn about Jobify" style="display: block; width: 220px; height: 220px; border-radius: 12px;">
+        </div>
+        <div style="margin-top: 2rem; font-size: 0.95rem; font-weight: 600; color: var(--primary-color); display: flex; align-items: center; justify-content: center; gap: 0.5rem; position: relative; z-index: 2;">
+            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            Point your camera at the screen
+        </div>
+    </div>
+</div>
+{% endblock %}

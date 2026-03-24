@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="max-width: 800px; margin: 0 auto;" class="glass-panel">
+    <h2 style="color: var(--primary-color); margin-bottom: 2rem;">Post a New Job</h2>
+    <form method="post" action="{% url 'jobs:create_job' %}" novalidate>
+        {% csrf_token %}
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            {% for field in form %}
+                <div class="form-group" {% if field.name == 'description' or field.name == 'requirements' %}style="grid-column: 1 / -1;"{% endif %}>
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: red; font-size: 0.8rem; margin-top: 0.3rem;">{{ field.errors.0 }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        <div style="text-align: right; margin-top: 1rem;">
+            <a href="{% url 'jobs:dashboard' %}" class="btn-secondary" style="margin-right: 1rem;">Cancel</a>
+            <button type="submit" class="btn-primary">Post Job</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

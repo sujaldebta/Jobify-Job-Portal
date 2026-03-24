@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="dashboard-header" style="background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);">
+    <div>
+        <h1>Welcome, {{ user.username }}!</h1>
+        <p>Track and manage your job applications.</p>
+    </div>
+    <div style="text-align: right;">
+        <a href="{% url 'jobs:home' %}" class="btn-primary" style="background: var(--surface-color); color: var(--primary-color); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">Browse More Jobs</a>
+    </div>
+</div>
+
+<div class="dashboard-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+    <div class="dash-stat-card" style="background: var(--surface-color); padding: 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 1.2rem; box-shadow: var(--shadow); border: 1px solid var(--surface-borde);">
+        <div class="dash-stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6; padding: 1rem; border-radius: 12px;">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        </div>
+        <div class="dash-stat-info">
+            <h3 style="margin: 0; font-size: 1.8rem; color: var(--text-color);">{{ stats.total }}</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">Total Applied</p>
+        </div>
+    </div>
+    <div class="dash-stat-card" style="background: var(--surface-color); padding: 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 1.2rem; box-shadow: var(--shadow); border: 1px solid var(--surface-borde);">
+        <div class="dash-stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B; padding: 1rem; border-radius: 12px;">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="dash-stat-info">
+            <h3 style="margin: 0; font-size: 1.8rem; color: var(--text-color);">{{ stats.pending }}</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">Pending Review</p>
+        </div>
+    </div>
+    <div class="dash-stat-card" style="background: var(--surface-color); padding: 1.5rem; border-radius: 16px; display: flex; align-items: center; gap: 1.2rem; box-shadow: var(--shadow); border: 1px solid var(--surface-borde);">
+        <div class="dash-stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981; padding: 1rem; border-radius: 12px;">
+            <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        </div>
+        <div class="dash-stat-info">
+            <h3 style="margin: 0; font-size: 1.8rem; color: var(--text-color);">{{ stats.shortlisted|add:stats.hired }}</h3>
+            <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem;">Shortlisted/Hired</p>
+        </div>
+    </div>
+</div>
+
+<h2 style="margin-bottom: 1.5rem; color: var(--text-color);">Recent Applications</h2>
+
+{% if applications %}
+<div class="app-list" style="display: flex; flex-direction: column; gap: 1rem;">
+    {% for app in applications %}
+    <div class="app-card glass-panel" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease;">
+        <div class="app-card-main" style="display: flex; align-items: center; gap: 1.5rem;">
+            <div class="app-logo" style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary-color) 0%, #1d4ed8 100%); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; flex-shrink: 0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+                {{ app.job.company_name|make_list|first|upper }}
+            </div>
+            <div class="app-details">
+                <h4 style="margin: 0 0 0.4rem 0; font-size: 1.25rem; color: var(--text-color);">{{ app.job.title }}</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem; color: var(--text-muted); font-size: 0.95rem; align-items: center;">
+                    <span style="font-weight: 600; color: var(--text-color);">{{ app.job.company_name }}</span>
+                    <span style="color: var(--surface-borde);">&bull;</span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                        {{ app.job.location }}
+                    </span>
+                    <span style="color: var(--surface-borde);">&bull;</span>
+                    <span style="display: flex; align-items: center; gap: 0.3rem;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Applied {{ app.applied_at|date:"M d, Y" }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1.5rem;">
+            <span class="status-badge 
+                {% if app.status == 'Pending' %}status-pending
+                {% elif app.status == 'Shortlisted' %}status-shortlisted
+                {% elif app.status == 'Hired' %}status-hired
+                {% else %}status-rejected{% endif %}" style="padding: 0.4rem 1rem; border-radius: 9999px; font-weight: 600; font-size: 0.85rem;">
+                {{ app.status }}
+            </span>
+            <a href="{% url 'jobs:job_detail' app.job.pk %}" class="btn-secondary" style="padding: 0.5rem 1rem;">View Job</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="glass-panel" style="text-align: center; padding: 4rem;">
+    <svg width="64" height="64" fill="none" stroke="#9CA3AF" viewBox="0 0 24 24" style="margin-bottom: 1rem; margin-left: auto; margin-right: auto;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+    <h3 style="color: var(--text-color); margin-bottom: 0.5rem; font-size: 1.5rem;">No Applications Yet</h3>
+    <p style="color: var(--text-muted);">You haven't applied to any jobs. Start exploring opportunities!</p>
+    <a href="{% url 'jobs:home' %}" class="btn-primary" style="margin-top: 1.5rem;">Browse Jobs</a>
+</div>
+{% endif %}
+
+{% endblock %}
